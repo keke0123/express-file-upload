@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+  <meta name="viewport" content="width=320; user-scalable=no" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>WebViewTest</title>
+</head>
+
+<form action="/profile" method="post" enctype="multipart/form-data">
+  <input type="file" id="camera" name="avatar" accept="image/*;capture=camera" />
+  <br />
+  <input type="file" id="camera2" name="avatar2" accept="video/*" capture="camera" />
+</form>
+
+<img id="pic" src="" style="width:300px;" />
+<br />
+<br />
+<button onclick="javascript:test2_from_ios()">TestBridge</button>
+
+<script>
+  function test1_from_android(payload) {
+    console.log(payload);
+    alert(payload);
+  }
+  function test2_from_android(payload) {
+    console.log(payload);
+    alert(payload);
+  }
+
+  function test1_from_ios() {
+    alert('test1_from_ios');
+  }
+  function test2_from_ios() {
+    alert('test2_from_ios');
+    webkit.messageHandlers.scriptHandler.postMessage('func1:(1, one)');
+  }
+
+  function saveImg() {
+    alert(window.android.getUsers());
+  }
+
+  function testBridge() {
+    let channelUrl = 'sendbird_group_channel_134915026_8a83374643010560f2aa6dfc6b7c4b3852c83798';
+    let userId = 'firsttest';
+    window.android.addFriendsFromPhonebook();
+  }
+
+  let file = document.querySelector('#camera');
+  let frame = document.querySelector('#pic');
+
+  // camera.addEventListener('change', function(e) {
+  //   var file = e.target.files[0];
+  //   // Do something with the image file.
+  //   frame.src = URL.createObjectURL(file);
+  // });
+
+  file.onchange = function() {
+    var fileList = file.files;
+    var reader = new FileReader();
+    reader.readAsDataURL(fileList[0]);
+
+    alert('imgFile Changed');
+
+    reader.onload = function() {
+      document.querySelector('#pic').src = reader.result;
+      alert(reader.result);
+    };
+  };
+</script>
